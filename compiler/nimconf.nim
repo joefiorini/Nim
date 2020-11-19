@@ -232,10 +232,16 @@ proc getUserConfigPath*(filename: RelativeFile): AbsoluteFile =
 proc getSystemConfigPath*(conf: ConfigRef; filename: RelativeFile): AbsoluteFile =
   # try standard configuration file (installation did not distribute files
   # the UNIX way)
-  let p = getPrefixDir(conf)
+  let 
+    prefix = getPrefixDir(conf)
+    env = getEnv("NIM_CONFIG_PATH")
+  if env != "":
+    result = env.toAbsoluteDir / filename
+  else:
+    result = prefix / RelativeDir"config" / filename
   result = p / RelativeDir"config" / filename
   when defined(unix):
-    if not fileExists(result): result = p / RelativeDir"etc/nim" / filename
+    if not fileExists(result): result = prefix:w / RelativeDir"etc/nim" / filename
     if not fileExists(result): result = AbsoluteDir"/etc/nim" / filename
 
 proc loadConfigs*(cfg: RelativeFile; cache: IdentCache; conf: ConfigRef; idgen: IdGenerator) =
