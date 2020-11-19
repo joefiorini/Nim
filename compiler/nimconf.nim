@@ -239,7 +239,6 @@ proc getSystemConfigPath*(conf: ConfigRef; filename: RelativeFile): AbsoluteFile
     result = env.toAbsoluteDir / filename
   else:
     result = prefix / RelativeDir"config" / filename
-  result = p / RelativeDir"config" / filename
   when defined(unix):
     if not fileExists(result): result = prefix:w / RelativeDir"etc/nim" / filename
     if not fileExists(result): result = AbsoluteDir"/etc/nim" / filename
