@@ -240,7 +240,7 @@ proc getSystemConfigPath*(conf: ConfigRef; filename: RelativeFile): AbsoluteFile
   else:
     result = prefix / RelativeDir"config" / filename
   when defined(unix):
-    if not fileExists(result): result = prefix:w / RelativeDir"etc/nim" / filename
+    if not fileExists(result): result = prefix / RelativeDir"etc/nim" / filename
     if not fileExists(result): result = AbsoluteDir"/etc/nim" / filename
 
 proc loadConfigs*(cfg: RelativeFile; cache: IdentCache; conf: ConfigRef; idgen: IdGenerator) =
